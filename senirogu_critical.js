@@ -117,28 +117,28 @@ javascript:(function() {
 
     const initialize = async () => {
         try {
-            const checkboxJson = await fetchJSON('https://github.com/dada-survivors/Critical/blob/main/checkbox.json');
+            const checkboxJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json1.json');
             if (!checkboxJson || !Array.isArray(checkboxJson.ids)) {
                 throw new Error('Failed to load checkbox IDs from JSON or IDs is not an array');
-            }	
+            }
             checkboxIds = checkboxJson.ids;
             console.log('Loaded checkbox IDs:', checkboxIds);
 
-            const radioJson = await fetchJSON('https://github.com/dada-survivors/Critical/blob/main/radiobottom.json');
+            const radioJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json2.json');
             if (!radioJson || !Array.isArray(radioJson.ids)) {
                 throw new Error('Failed to load radio IDs from JSON or IDs is not an array');
             }
             radioIds = radioJson.ids;
             console.log('Loaded radio IDs:', radioIds);
 
-            const dropdownJson = await fetchJSON('https://github.com/dada-survivors/Critical/blob/main/pulldown.json');
+            const dropdownJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json3.json');
             if (!dropdownJson || !Array.isArray(dropdownJson.ids)) {
                 throw new Error('Failed to load dropdown IDs from JSON or IDs is not an array');
             }
             dropdownIds = dropdownJson.ids;
             console.log('Loaded dropdown IDs:', dropdownIds);
 
-            const textboxJson = await fetchJSON('https://github.com/dada-survivors/Critical/blob/main/textbox.json');
+            const textboxJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json4.json');
             if (!textboxJson || !Array.isArray(textboxJson.ids)) {
                 throw new Error('Failed to load textbox IDs from JSON or IDs is not an array');
             }
