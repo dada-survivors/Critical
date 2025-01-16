@@ -164,6 +164,7 @@ javascript:(function() {
                     <div style="display: flex; flex-direction: column;">
                         <div>
                             <button id="saveButton" style="width: 150px;">保存</button>
+                            <BR></BR>
                             <button id="loadButton" style="width: 150px;">読み込み</button>
                         </div>
                         <div>
