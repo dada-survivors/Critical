@@ -115,30 +115,42 @@ javascript:(function() {
         }
     };
 
+    const clearCache = () => {
+        try {
+            localStorage.removeItem('checkboxStates');
+            localStorage.removeItem('radioStates');
+            localStorage.removeItem('dropdownStates');
+            localStorage.removeItem('textboxStates');
+            console.log('キャッシュをクリアしました！');
+        } catch (error) {
+            console.error('Error in clearCache function:', error);
+        }
+    };
+
     const initialize = async () => {
         try {
-            const checkboxJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json1.json');
+            const checkboxJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/checkbox.json');
             if (!checkboxJson || !Array.isArray(checkboxJson.ids)) {
                 throw new Error('Failed to load checkbox IDs from JSON or IDs is not an array');
             }
             checkboxIds = checkboxJson.ids;
             console.log('Loaded checkbox IDs:', checkboxIds);
 
-            const radioJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json2.json');
+            const radioJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/radiobottom.json');
             if (!radioJson || !Array.isArray(radioJson.ids)) {
                 throw new Error('Failed to load radio IDs from JSON or IDs is not an array');
             }
             radioIds = radioJson.ids;
             console.log('Loaded radio IDs:', radioIds);
 
-            const dropdownJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json3.json');
+            const dropdownJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/pulldown.json');
             if (!dropdownJson || !Array.isArray(dropdownJson.ids)) {
                 throw new Error('Failed to load dropdown IDs from JSON or IDs is not an array');
             }
             dropdownIds = dropdownJson.ids;
             console.log('Loaded dropdown IDs:', dropdownIds);
 
-            const textboxJson = await fetchJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json4.json');
+            const textboxJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/textbox.json');
             if (!textboxJson || !Array.isArray(textboxJson.ids)) {
                 throw new Error('Failed to load textbox IDs from JSON or IDs is not an array');
             }
@@ -152,6 +164,8 @@ javascript:(function() {
                     <button id="saveButton">保存</button>
                     <button id="loadButton">読み込み</button>
                     <button id="closeButton">閉じる</button>
+                    <button id="clearCacheButton">キャッシュクリア</button>
+
                 </div>
             `;
             document.body.appendChild(dialog);
@@ -163,6 +177,11 @@ javascript:(function() {
 
             document.getElementById('loadButton').addEventListener('click', () => {
                 load();
+                document.body.removeChild(dialog);
+            });
+
+            document.getElementById('clearCacheButton').addEventListener('click', () => {
+                clearCache();
                 document.body.removeChild(dialog);
             });
 
