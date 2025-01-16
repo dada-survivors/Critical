@@ -160,7 +160,7 @@ javascript:(function() {
             const dialog = document.createElement('div');
             dialog.innerHTML = `
                 <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
-                    <p>チェック状態を保存しますか？「読み込み」を押すと復元します。</p>
+                    <p>状態を保存しますか？「読み込み」を押すと復元します。</p>
                     <button id="saveButton">保存</button>
                     <button id="loadButton">読み込み</button>
                     <button id="closeButton">閉じる</button>
