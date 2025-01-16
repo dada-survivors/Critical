@@ -158,25 +158,29 @@ javascript:(function() {
             console.log('Loaded textbox IDs:', textboxIds);
 
             const dialog = document.createElement('div');
-            dialog.innerHTML = `
-                <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
-                    <p>状態を保存しますか？「読み込み」を押すと復元します。</p>
-                    <div style="display: flex; flex-direction: column;">
-                        <div>
-                            <button id="saveButton" style="width: 150px;">保存</button>
-                            <BR></BR>
-                            <button id="loadButton" style="width: 150px;">読み込み</button>
-                        </div>
-                        <div>
-                            <BR></BR>
-                            <button id="closeButton" style="width: 150px;">閉じる</button>
-                            <BR></BR>
-                            <button id="clearCacheButton" style="width: 150px;">キャッシュクリア</button>
-
-                        </div>
-                    </div>
-                </div>
+dialog.innerHTML = `
+  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+    <div style="display: flex; justify-content: flex-end;">
+      <button id="closeButton" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+    </div>
+    <p>クリティカル%の状態を</p>
+    <div style="display: flex; flex-direction: column;">
+      <div>
+        <button id="saveButton" style="width: 150px;">保存</button>
+        <br></br>
+        <button id="loadButton" style="width: 150px;">読み込み</button>
+        <br></br>
+        <button id="closeDialogButton" style="width: 150px;">閉じる</button>
+      </div>
+      <div>
+        <p style="text-align: left;">----------------------</p>
+        保存情報が壊れた場合　涙</p>
+        <button id="clearCacheButton" style="width: 150px;">キャッシュクリア</button>
+      </div>
+    </div>
+  </div>
             `;
+            
             document.body.appendChild(dialog);
 
             document.getElementById('saveButton').addEventListener('click', () => {
@@ -197,6 +201,10 @@ javascript:(function() {
             document.getElementById('closeButton').addEventListener('click', () => {
                 document.body.removeChild(dialog);
             });
+            document.getElementById('closeDialogButton').addEventListener('click', () => {
+                document.body.removeChild(dialog);
+            });
+
         } catch (error) {
             console.error('Error in initialize function:', error);
         }
