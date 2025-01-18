@@ -25,13 +25,13 @@ javascript:(function() {
                 return acc;
             }, {});
             localStorage.setItem(`${type}States_${key}`, JSON.stringify(state));
+            console.log(`保存しました: ${type}States_${key}`, state);
         };
 
         saveState(checkboxIds, 'checkbox');
         saveState(radioIds, 'radio');
         saveState(dropdownIds, 'dropdown');
         saveState(textboxIds, 'textbox');
-        console.log('保存しました！');
     };
 
     const load = async (key) => {
@@ -48,9 +48,9 @@ javascript:(function() {
                         }
                     }
                 });
-                console.log(`${type}の状態を復元しました！`);
+                console.log(`${type}の状態を復元しました: ${key}`, state);
             } else {
-                console.log(`保存された${type}の状態がありません。`);
+                console.log(`保存された${type}の状態がありません: ${key}`);
             }
         };
 
@@ -64,6 +64,7 @@ javascript:(function() {
         ['checkbox', 'radio', 'dropdown', 'textbox'].forEach(type => {
             localStorage.removeItem(`${type}States_key1`);
             localStorage.removeItem(`${type}States_key2`);
+            console.log(`削除しました: ${type}States_key1 と ${type}States_key2`);
         });
         console.log('保存データをクリアしました！');
     };
@@ -93,7 +94,7 @@ javascript:(function() {
                 <div style="display: flex; justify-content: flex-end;">
                     <button id="closeButton" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
                 </div>
-                <p style="text-align: center;">クリティカルを</p>
+                <p style="text-align: center;">クリティカル%の状態を</p>
                 <div style="display: flex; flex-direction: column; align-items: center;">
                     <div style="display: flex; justify-content: space-between; width: 100%;">
                         <button id="saveButton1" style="width: 150px;">保存1</button>
@@ -107,7 +108,7 @@ javascript:(function() {
                         <button id="closeDialogButton" style="width: 150px;">閉じる</button>
                     </div>
                     <div style="margin-top: 20px;">
-                        <p style="text-align: center;">😭保存情報が壊れた場合😭</p>
+                        <p style="text-align: center;">保存情報が壊れた場合</p>
                     </div>
                     <div style="margin-top: 10px;">
                         <button id="clearCacheButton" style="width: 150px;">保存データをクリア</button>
