@@ -96,7 +96,7 @@ javascript:(function() {
                 <p style="text-align: center;">クリティカルを</p>
                 <div style="display: flex; flex-direction: column; align-items: center;">
                     <div style="display: flex; justify-content: space-between; width: 100%;">
-                        <button id="saveButton1" style="width: 150px;">保存</button>
+                        <button id="saveButton1" style="width: 150px;">保存1</button>
                         <button id="saveButton2" style="width: 150px;">保存2</button>
                     </div>
                     <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 10px;">
@@ -107,10 +107,10 @@ javascript:(function() {
                         <button id="closeDialogButton" style="width: 150px;">閉じる</button>
                     </div>
                     <div style="margin-top: 20px;">
-                        <p style="text-align: center;">保存情報が壊れた場合</p>
+                        <p style="text-align: center;">😭保存情報が壊れた場合😭</p>
                     </div>
                     <div style="margin-top: 10px;">
-                        <button id="clearCacheButton" style="width: 150px;">保存デーをクリア</button>
+                        <button id="clearCacheButton" style="width: 150px;">保存データをクリア</button>
                     </div>
                 </div>
             </div>
