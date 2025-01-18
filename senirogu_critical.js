@@ -174,7 +174,7 @@ dialog.innerHTML = `
       </div>
       <div>
         <p style="text-align: left;">----------------------</p>
-        保存情報が壊れた場合　涙</p>
+        保存情報が壊れた場合</p>
         <button id="clearCacheButton" style="width: 150px;">キャッシュクリア</button>
       </div>
     </div>
