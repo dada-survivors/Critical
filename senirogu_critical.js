@@ -7,207 +7,148 @@ javascript:(function() {
     let textboxIds = [];
 
     const fetchJSON = async (url) => {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+        const response = await fetch(url);
+        if (response.ok) {
             const json = await response.json();
             console.log('JSONが正常に読み込まれました。', json);
             return json;
-        } catch (error) {
-            console.error('Error fetching JSON:', error);
-            return null;
         }
+        console.error('Error fetching JSON:', response.status);
+        return null;
     };
 
-    const save = () => {
-        try {
-            const checkboxState = checkboxIds.reduce((acc, id) => {
-                const checkbox = document.getElementById(id);
-                if (checkbox) acc[id] = checkbox.checked;
+    const save = (key) => {
+        const saveState = (ids, type) => {
+            const state = ids.reduce((acc, id) => {
+                const element = document.getElementById(id);
+                if (element) acc[id] = type === 'checkbox' ? element.checked : element.value;
                 return acc;
             }, {});
-            localStorage.setItem('checkboxStates', JSON.stringify(checkboxState));
+            localStorage.setItem(`${type}States_${key}`, JSON.stringify(state));
+        };
 
-            const radioState = radioIds.reduce((acc, id) => {
-                const radio = document.getElementById(id);
-                if (radio && radio.checked) acc[id] = true;
-                return acc;
-            }, {});
-            localStorage.setItem('radioStates', JSON.stringify(radioState));
-
-            const dropdownState = dropdownIds.reduce((acc, id) => {
-                const dropdown = document.getElementById(id);
-                if (dropdown) acc[id] = dropdown.value;
-                return acc;
-            }, {});
-            localStorage.setItem('dropdownStates', JSON.stringify(dropdownState));
-
-            const textboxState = textboxIds.reduce((acc, id) => {
-                const textbox = document.getElementById(id);
-                if (textbox) acc[id] = textbox.value;
-                return acc;
-            }, {});
-            localStorage.setItem('textboxStates', JSON.stringify(textboxState));
-
-            console.log('保存しました！');
-        } catch (error) {
-            console.error('Error in save function:', error);
-        }
+        saveState(checkboxIds, 'checkbox');
+        saveState(radioIds, 'radio');
+        saveState(dropdownIds, 'dropdown');
+        saveState(textboxIds, 'textbox');
+        console.log('保存しました！');
     };
 
-    const load = async () => {
-        try {
-            const checkboxState = JSON.parse(localStorage.getItem('checkboxStates'));
-            if (checkboxState) {
-                checkboxIds.forEach(id => {
-                    const checkbox = document.getElementById(id);
-                    if (checkbox && checkboxState.hasOwnProperty(id)) {
-                        checkbox.checked = checkboxState[id];
+    const load = async (key) => {
+        const loadState = (ids, type) => {
+            const state = JSON.parse(localStorage.getItem(`${type}States_${key}`));
+            if (state) {
+                ids.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element && state.hasOwnProperty(id)) {
+                        if (type === 'checkbox' || type === 'radio') {
+                            element.checked = state[id];
+                        } else {
+                            element.value = state[id];
+                        }
                     }
                 });
-                console.log('チェックボックスの状態を復元しました！');
+                console.log(`${type}の状態を復元しました！`);
             } else {
-                console.log('保存されたチェックボックスの状態がありません。');
+                console.log(`保存された${type}の状態がありません。`);
             }
+        };
 
-            const radioState = JSON.parse(localStorage.getItem('radioStates'));
-            if (radioState) {
-                radioIds.forEach(id => {
-                    const radio = document.getElementById(id);
-                    if (radio && radioState.hasOwnProperty(id)) {
-                        radio.checked = radioState[id];
-                    }
-                });
-                console.log('ラジオボタンの状態を復元しました！');
-            } else {
-                console.log('保存されたラジオボタンの状態がありません。');
-            }
-
-            const dropdownState = JSON.parse(localStorage.getItem('dropdownStates'));
-            if (dropdownState) {
-                dropdownIds.forEach(id => {
-                    const dropdown = document.getElementById(id);
-                    if (dropdown && dropdownState.hasOwnProperty(id)) {
-                        dropdown.value = dropdownState[id];
-                    }
-                });
-                console.log('プルダウンの状態を復元しました！');
-            } else {
-                console.log('保存されたプルダウンの状態がありません。');
-            }
-
-            const textboxState = JSON.parse(localStorage.getItem('textboxStates'));
-            if (textboxState) {
-                textboxIds.forEach(id => {
-                    const textbox = document.getElementById(id);
-                    if (textbox && textboxState.hasOwnProperty(id)) {
-                        textbox.value = textboxState[id];
-                    }
-                });
-                console.log('テキストボックスの状態を復元しました！');
-            } else {
-                console.log('保存されたテキストボックスの状態がありません。');
-            }
-        } catch (error) {
-            console.error('Error in load function:', error);
-        }
+        loadState(checkboxIds, 'checkbox');
+        loadState(radioIds, 'radio');
+        loadState(dropdownIds, 'dropdown');
+        loadState(textboxIds, 'textbox');
     };
 
-    const clearCache = () => {
-        try {
-            localStorage.removeItem('checkboxStates');
-            localStorage.removeItem('radioStates');
-            localStorage.removeItem('dropdownStates');
-            localStorage.removeItem('textboxStates');
-            console.log('キャッシュをクリアしました！');
-        } catch (error) {
-            console.error('Error in clearCache function:', error);
-        }
+    const clearSavedData = () => {
+        ['checkbox', 'radio', 'dropdown', 'textbox'].forEach(type => {
+            localStorage.removeItem(`${type}States_key1`);
+            localStorage.removeItem(`${type}States_key2`);
+        });
+        console.log('保存データをクリアしました！');
     };
 
     const initialize = async () => {
-        try {
-            const checkboxJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/checkbox.json');
-            if (!checkboxJson || !Array.isArray(checkboxJson.ids)) {
-                throw new Error('Failed to load checkbox IDs from JSON or IDs is not an array');
+        const loadIds = async (url, type) => {
+            const json = await fetchJSON(url);
+            if (json && Array.isArray(json.ids)) {
+                switch (type) {
+                    case 'checkbox': checkboxIds = json.ids; break;
+                    case 'radio': radioIds = json.ids; break;
+                    case 'dropdown': dropdownIds = json.ids; break;
+                    case 'textbox': textboxIds = json.ids; break;
+                }
+                console.log(`Loaded ${type} IDs:`, json.ids);
             }
-            checkboxIds = checkboxJson.ids;
-            console.log('Loaded checkbox IDs:', checkboxIds);
+        };
 
-            const radioJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/radiobottom.json');
-            if (!radioJson || !Array.isArray(radioJson.ids)) {
-                throw new Error('Failed to load radio IDs from JSON or IDs is not an array');
-            }
-            radioIds = radioJson.ids;
-            console.log('Loaded radio IDs:', radioIds);
+        await loadIds('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/checkbox.json', 'checkbox');
+        await loadIds('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/radiobottom.json', 'radio');
+        await loadIds('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/pulldown.json', 'dropdown');
+        await loadIds('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/textbox.json', 'textbox');
 
-            const dropdownJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/pulldown.json');
-            if (!dropdownJson || !Array.isArray(dropdownJson.ids)) {
-                throw new Error('Failed to load dropdown IDs from JSON or IDs is not an array');
-            }
-            dropdownIds = dropdownJson.ids;
-            console.log('Loaded dropdown IDs:', dropdownIds);
+        const dialog = document.createElement('div');
+        dialog.innerHTML = `
+            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+                <div style="display: flex; justify-content: flex-end;">
+                    <button id="closeButton" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+                </div>
+                <p style="text-align: center;">クリティカルを</p>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <button id="saveButton1" style="width: 150px;">保存</button>
+                        <button id="saveButton2" style="width: 150px;">保存2</button>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 10px;">
+                        <button id="loadButton1" style="width: 150px;">読込み1</button>
+                        <button id="loadButton2" style="width: 150px;">読込み2</button>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button id="closeDialogButton" style="width: 150px;">閉じる</button>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <p style="text-align: center;">保存情報が壊れた場合</p>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button id="clearCacheButton" style="width: 150px;">保存デーをクリア</button>
+                    </div>
+                </div>
+            </div>
+        `;
 
-            const textboxJson = await fetchJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/textbox.json');
-            if (!textboxJson || !Array.isArray(textboxJson.ids)) {
-                throw new Error('Failed to load textbox IDs from JSON or IDs is not an array');
-            }
-            textboxIds = textboxJson.ids;
-            console.log('Loaded textbox IDs:', textboxIds);
+        document.body.appendChild(dialog);
 
-            const dialog = document.createElement('div');
-dialog.innerHTML = `
-  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
-    <div style="display: flex; justify-content: flex-end;">
-      <button id="closeButton" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
-    </div>
-    <p>クリティカル%の状態を</p>
-    <div style="display: flex; flex-direction: column;">
-      <div>
-        <button id="saveButton" style="width: 150px;">保存</button>
-        <br></br>
-        <button id="loadButton" style="width: 150px;">読み込み</button>
-        <br></br>
-        <button id="closeDialogButton" style="width: 150px;">閉じる</button>
-      </div>
-      <div>
-        <p style="text-align: left;">----------------------</p>
-        保存情報が壊れた場合</p>
-        <button id="clearCacheButton" style="width: 150px;">キャッシュクリア</button>
-      </div>
-    </div>
-  </div>
-            `;
-            
-            document.body.appendChild(dialog);
+        document.getElementById('saveButton1').addEventListener('click', () => {
+            save('key1');
+            document.body.removeChild(dialog);
+        });
 
-            document.getElementById('saveButton').addEventListener('click', () => {
-                save();
-                document.body.removeChild(dialog);
-            });
+        document.getElementById('loadButton1').addEventListener('click', () => {
+            load('key1');
+            document.body.removeChild(dialog);
+        });
 
-            document.getElementById('loadButton').addEventListener('click', () => {
-                load();
-                document.body.removeChild(dialog);
-            });
+        document.getElementById('saveButton2').addEventListener('click', () => {
+            save('key2');
+            document.body.removeChild(dialog);
+        });
 
-            document.getElementById('clearCacheButton').addEventListener('click', () => {
-                clearCache();
-                document.body.removeChild(dialog);
-            });
+        document.getElementById('loadButton2').addEventListener('click', () => {
+            load('key2');
+            document.body.removeChild(dialog);
+        });
 
-            document.getElementById('closeButton').addEventListener('click', () => {
-                document.body.removeChild(dialog);
-            });
-            document.getElementById('closeDialogButton').addEventListener('click', () => {
-                document.body.removeChild(dialog);
-            });
+        document.getElementById('clearCacheButton').addEventListener('click', () => {
+            clearSavedData();
+            document.body.removeChild(dialog);
+        });
 
-        } catch (error) {
-            console.error('Error in initialize function:', error);
-        }
+        document.getElementById('closeButton').addEventListener('click', () => {
+            document.body.removeChild(dialog);
+        });
+        document.getElementById('closeDialogButton').addEventListener('click', () => {
+            document.body.removeChild(dialog);
+        });
     };
 
     initialize();
