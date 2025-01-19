@@ -88,28 +88,34 @@ javascript:(function() {
         } catch (e) {}
     };
 
+    const closeDialog = (dlg) => {
+        try {
+            document.body.removeChild(dlg);
+        } catch (e) {}
+    };
+
     const init = async () => {
         try {
-            const cJson = await fJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json1.json');
+            const cJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/checkbox.json');
             if (!cJson || !Array.isArray(cJson.ids)) throw new Error('Failed to load checkbox IDs');
             cIds = cJson.ids;
 
-            const rJson = await fJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json2.json');
+            const rJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/radiobottom.json');
             if (!rJson || !Array.isArray(rJson.ids)) throw new Error('Failed to load radio IDs');
             rIds = rJson.ids;
 
-            const dJson = await fJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json3.json');
+            const dJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/pulldown.json');
             if (!dJson || !Array.isArray(dJson.ids)) throw new Error('Failed to load dropdown IDs');
             dIds = dJson.ids;
 
-            const tJson = await fJSON('https://raw.githubusercontent.com/cho-gachizei/my-scripts/main/json4.json');
+            const tJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/textbox.json');
             if (!tJson || !Array.isArray(tJson.ids)) throw new Error('Failed to load textbox IDs');
             tIds = tJson.ids;
 
             const dlg = document.createElement('div');
             dlg.innerHTML = `
                 <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
-                    <p>自分のクリティカルをどうしますか？：</p>
+                    <p style="text-align: center;">クリティカル率</p>
                     <div style="display: flex; justify-content: space-between;">
                         <button id="sBtn1" style="flex: 1; margin: 2px;">保存1</button>
                         <button id="sBtn2" style="flex: 1; margin: 2px;">保存2</button>
@@ -130,37 +136,55 @@ javascript:(function() {
             document.body.appendChild(dlg);
 
             document.getElementById('sBtn1').addEventListener('click', () => {
-                save('保存1');
-                document.body.removeChild(dlg);
+                try {
+                    save('保存1');
+                } finally {
+                    closeDialog(dlg);
+                }
             });
 
             document.getElementById('sBtn2').addEventListener('click', () => {
-                save('保存2');
-                document.body.removeChild(dlg);
+                try {
+                    save('保存2');
+                } finally {
+                    closeDialog(dlg);
+                }
             });
 
             document.getElementById('lBtn1').addEventListener('click', () => {
-                load('保存1');
-                document.body.removeChild(dlg);
+                try {
+                    load('保存1');
+                } finally {
+                    closeDialog(dlg);
+                }
             });
 
             document.getElementById('lBtn2').addEventListener('click', () => {
-                load('保存2');
-                document.body.removeChild(dlg);
+                try {
+                    load('保存2');
+                } finally {
+                    closeDialog(dlg);
+                }
             });
 
             document.getElementById('clrBtn1').addEventListener('click', () => {
-                clear('保存1');
-                document.body.removeChild(dlg);
+                try {
+                    clear('保存1');
+                } finally {
+                    closeDialog(dlg);
+                }
             });
 
             document.getElementById('clrBtn2').addEventListener('click', () => {
-                clear('保存2');
-                document.body.removeChild(dlg);
+                try {
+                    clear('保存2');
+                } finally {
+                    closeDialog(dlg);
+                }
             });
 
             document.getElementById('cBtn').addEventListener('click', () => {
-                document.body.removeChild(dlg);
+                closeDialog(dlg);
             });
         } catch (e) {}
     };
