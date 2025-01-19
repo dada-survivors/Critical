@@ -119,14 +119,17 @@ javascript:(function() {
                     <div style="display: flex; justify-content: space-between;">
                         <button id="sBtn1" style="flex: 1; margin: 2px;">保存1</button>
                         <button id="sBtn2" style="flex: 1; margin: 2px;">保存2</button>
+                        <button id="sBtn3" style="flex: 1; margin: 2px;">保存3</button>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <button id="lBtn1" style="flex: 1; margin: 2px;">読み込み1</button>
                         <button id="lBtn2" style="flex: 1; margin: 2px;">読み込み2</button>
+                        <button id="lBtn3" style="flex: 1; margin: 2px;">読み込み3</button>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <button id="clrBtn1" style="flex: 1; margin: 2px;">削除1</button>
                         <button id="clrBtn2" style="flex: 1; margin: 2px;">削除2</button>
+                        <button id="clrBtn3" style="flex: 1; margin: 2px;">削除3</button>
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <button id="cBtn" style="flex: 1; margin: 2px;">閉じる</button>
@@ -151,6 +154,14 @@ javascript:(function() {
                 }
             });
 
+            document.getElementById('sBtn3').addEventListener('click', () => {
+                try {
+                    save('保存3');
+                } finally {
+                    closeDialog(dlg);
+                }
+            });
+
             document.getElementById('lBtn1').addEventListener('click', () => {
                 try {
                     load('保存1');
@@ -167,6 +178,14 @@ javascript:(function() {
                 }
             });
 
+            document.getElementById('lBtn3').addEventListener('click', () => {
+                try {
+                    load('保存3');
+                } finally {
+                    closeDialog(dlg);
+                }
+            });
+
             document.getElementById('clrBtn1').addEventListener('click', () => {
                 try {
                     clear('保存1');
@@ -178,6 +197,14 @@ javascript:(function() {
             document.getElementById('clrBtn2').addEventListener('click', () => {
                 try {
                     clear('保存2');
+                } finally {
+                    closeDialog(dlg);
+                }
+            });
+
+            document.getElementById('clrBtn3').addEventListener('click', () => {
+                try {
+                    clear('保存3');
                 } finally {
                     closeDialog(dlg);
                 }
