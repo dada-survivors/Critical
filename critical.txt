@@ -1,0 +1,1 @@
+javascript:(function() { var script = document.createElement('script'); script.src = 'https://cdn.jsdelivr.net/gh/dada-survivors/Critical@9beeb74/senirogu_critical.js'; script.type = 'text/javascript'; script.onload = function() { }; script.onerror = function() { alert('スクリプトの読み込みに失敗しました。'); }; document.body.appendChild(script);})();
