@@ -96,19 +96,19 @@ javascript:(function() {
 
     const init = async () => {
         try {
-            const cJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/checkbox.json');
+            const cJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical@main/checkbox.json');
             if (!cJson || !Array.isArray(cJson.ids)) throw new Error('Failed to load checkbox IDs');
             cIds = cJson.ids;
 
-            const rJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/radiobottom.json');
+            const rJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical@main/radiobottom.json');
             if (!rJson || !Array.isArray(rJson.ids)) throw new Error('Failed to load radio IDs');
             rIds = rJson.ids;
 
-            const dJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/pulldown.json');
+            const dJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical@main/pulldown.json');
             if (!dJson || !Array.isArray(dJson.ids)) throw new Error('Failed to load dropdown IDs');
             dIds = dJson.ids;
 
-            const tJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical/textbox.json');
+            const tJson = await fJSON('https://cdn.jsdelivr.net/gh/dada-survivors/Critical@main/textbox.json');
             if (!tJson || !Array.isArray(tJson.ids)) throw new Error('Failed to load textbox IDs');
             tIds = tJson.ids;
 
